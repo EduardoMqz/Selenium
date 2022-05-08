@@ -19,6 +19,7 @@ public class Computer {
 	  WebDriver driver = new ChromeDriver(chromeOpt);
 	  
 	  driver.get("https://computer-database.gatling.io/computers");
+	  driver.manage().window().maximize();
 	  
 	//realtive Xpath  -> input[@id='add']  
 	  driver.findElement(By.xpath("//a[@id='add']")).click();
