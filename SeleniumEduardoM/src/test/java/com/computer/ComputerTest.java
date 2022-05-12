@@ -2,9 +2,14 @@ package com.computer;
 
 import org.testng.annotations.Test;
 import com.pom.base.Base;
+import com.pom.base.GlobalVariables;
 import com.pom.poc.ComputerSearch;
 import org.testng.annotations.BeforeTest;
+
+import java.io.FileNotFoundException;
+
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
 public class ComputerTest {
@@ -17,43 +22,39 @@ public class ComputerTest {
 	Base base;
 	ComputerSearch computer;
 	
+	//Instancia
+	String name, introduced, discontinued, company, search,company2;
+	
 	@BeforeTest
-	  public void beforeTest() {
+	  public void beforeTest() throws FileNotFoundException {
 		System.out.println("BeforeTest");
 		
 		base = new Base(driver);
 		driver = base.SetupChromeDriver();
 		computer = new ComputerSearch(driver);
 		
+		//Setup data
+		this.name = base.getJSONValue("data", "name");
+		this.introduced = base.getJSONValue("data", "introduced");
+		this.discontinued = base.getJSONValue("data", "discontinued");
+		this.company = base.getJSONValue("data", "company");
+		
 	  }
 	
 	@Test
 	public void tc001() {
 		System.out.println("tc001");
-		
-		base.launchBrowser(null);
-		computer.NewComputer(null, null, null, null);
-		
+		base.launchBrowser(GlobalVariables.URL);
+		computer.NewComputer(name, introduced, discontinued, company);
 		
   }
 	
-	@Test
-	public void tc002() {
-		System.out.println("tc002");
-	  }
 	
 	
-	@Test
-	public void tc003() {
-		System.out.println("tc003");
-	  }
-	
-	
-  
-
   @AfterTest
   public void afterTest() {
 	  System.out.println("AfterTest");
+	  driver.close();
   }
 
 }

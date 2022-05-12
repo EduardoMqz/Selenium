@@ -2,6 +2,7 @@ package com.pom.poc;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 import com.pom.base.Base;
 
@@ -26,24 +27,32 @@ public class ComputerSearch extends Base {
 	By txtSearchBox = By.xpath("//input[@id='searchbox']");
 	By btnSubmitSearch = By.xpath("//input[@id='searchsubmit']");
 	By tblComputer = By.xpath("//tbody/tr[1]/td[1]/a");
+	By txtDone = By.xpath("//div/strong");
 	
 	//Customize methods
 	public void NewComputer(String name, String introduced , String discontinued, String company) {
 		click(btnAdd);
+		waitForElementPresent(btnSubmit);
 		type(txtName, name);
 		type(txtIntroduces, introduced);
 		type(txtdiscontinued, discontinued);
 		select(ddCompany, company);
 		click(btnSubmit);
+		waitForElementPresent(txtDone);
+		takeScreenshot("AfterNewComputer");
+
 	}
 	
 	public void UpdateComputer(String search, String company) {
 		type(txtSearchBox, search);
 		click(btnSubmitSearch);
+		waitForElementPresent(tblComputer);
 		click(tblComputer);
-		
+		waitForElementPresent(btnSubmit);
 		select(ddCompany, company);
 		click(btnSubmit);
+		waitForElementPresent(txtDone);
+		takeScreenshot("AfterUpdateComputer");
 	}
 	
 	
