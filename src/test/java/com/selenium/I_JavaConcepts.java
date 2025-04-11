@@ -1,18 +1,12 @@
 package com.selenium;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
 public class I_JavaConcepts {
-    /**
-     * Rigorous Test :-)
-     */
+
     @Test
     public void Variables(){
         int myNum = 5;
@@ -24,17 +18,27 @@ public class I_JavaConcepts {
             String:     %s
             int:        %d
             double:     %f
-            character:  %c%n""", webSite, myNum, deci, charac);
+            character:  %c""", webSite, myNum, deci, charac);
+    }
 
+    @Test
+    public void arrayList(){
         ArrayList<Integer> arrInt = new ArrayList<>(
-            List.of(5,10,15,20,25));
-
+            List.of(5,10,15,20,25,2,4,6,8,3,9,12));
         for (int i = 0; i < arrInt.size(); i++) {
             System.out.printf("Element %d:   %d%n",i ,arrInt.get(i));
         }
-        
+        System.out.println("*".repeat(15));
 
-
-        
+        arrInt.sort(Comparator.naturalOrder());
+        for(Integer numb : arrInt){
+            if (numb % 3 == 0) {
+                System.out.println("Element value: "+numb);
+            }else{
+                System.out.println(numb + " is not mutiple of three");
+            }
+        }
     }
-} 
+
+}
+ 
