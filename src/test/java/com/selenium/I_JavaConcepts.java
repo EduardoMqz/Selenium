@@ -40,5 +40,25 @@ public class I_JavaConcepts {
         }
     }
 
+    @Test
+    public void stringMethods(){
+        String s = "Java string";
+        String s1 = "Java string";
+        String s2 = new String("Welcome");
+        String s3 = new String("Welcome to java strings");
+
+        String[] splittedString = s3.split(" ");
+        for (String string : splittedString) {
+            System.out.println(string);
+            for (int i = 0; i < string.length(); i++) {
+                System.out.println(string.charAt(i));
+            }
+            System.out.println("-".repeat(15));
+            for (int i = string.length()-1; i >= 0; i--) {
+                System.out.println(string.charAt(i));
+            }
+            System.out.println("*".repeat(15));
+        }
+    }
 }
  
