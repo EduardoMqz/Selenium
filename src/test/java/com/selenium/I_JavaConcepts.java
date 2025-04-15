@@ -60,5 +60,15 @@ public class I_JavaConcepts {
             System.out.println("*".repeat(15));
         }
     }
+
+    @Test
+    public void Javamethods(){
+        System.out.println(getData()); 
+    }
+
+    public static String getData(){
+        System.out.println("hello world");
+        return "Java methods";
+    }
 }
  
