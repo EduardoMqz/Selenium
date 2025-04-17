@@ -1,3 +1,5 @@
 .vscode/settings.json
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+src/test/java/com/resources/II_locators.json
+target/test-classes/com/resources/II_locators.json
