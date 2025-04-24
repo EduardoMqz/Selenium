@@ -24,7 +24,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
-      <scope>test</scope>
     </dependency>
     <!-- selenium dependecy added mannualy-->
     <dependency>
@@ -37,7 +36,6 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.11.0</version>
-      <scope>test</scope>
     </dependency>
     <!-- fasterxml dependecy added mannualy-->
     <dependency>
