@@ -27,7 +27,7 @@ public class III_advancedLocators {
         driver.findElement(By.id("chkboxOne")).click();
         driver.findElement(By.xpath("//button[contains(@class,'submit')]")).click();
         wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='login-container']/p")));
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='login-container']/p")));
         Assert.assertEquals("You are successfully logged in.", driver.findElement(By.tagName("p")).getText());
         Assert.assertEquals("Hello " +(String) config.get("username")+",", driver.findElement(By.tagName("h2")).getText());
         driver.findElement(By.xpath("//button[text()='Log Out']")).click();
