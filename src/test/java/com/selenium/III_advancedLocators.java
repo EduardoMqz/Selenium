@@ -35,4 +35,28 @@ public class III_advancedLocators {
             ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[text()='Sign in']")));
         driver.quit();
     }
+
+    @Test
+    public void siblingsLocators() throws IOException {
+        Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/III_advancedLocators.json");
+        System.setProperty("webdriver.chrome.driver", "src/main/java/com/selenium/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+
+        driver.get((String) config.get("webpage2"));
+        String buttonTest = driver.findElement(By.xpath("//header/div/button[1]/following-sibling::button[1]")).getText();
+        String buttonText2 = driver.findElement(By.xpath("//header/div/button[1]/parent::div/button[2]")).getText();
+        Assert.assertEquals(buttonTest, buttonText2);
+        driver.navigate().to((String) config.get("webpage"));
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated((By.id("chkboxOne"))));
+        driver.navigate().back();
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//header/div/button[1]/following-sibling::button[1]")));
+        driver.navigate().forward();
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated((By.id("chkboxOne"))));
+        driver.quit();
+    }
 }
