@@ -17,7 +17,7 @@ public class III_advancedLocators {
     @Test
     public void advancedLocators() throws IOException {
         Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/III_advancedLocators.json");
-        System.setProperty("webdriver.chrome.driver", "src/main/java/com/selenium/chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "src/main/java/com/selenium/chromedriver.exe"); NO LONGER NEEDED
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -39,7 +39,7 @@ public class III_advancedLocators {
     @Test
     public void siblingsLocators() throws IOException {
         Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/III_advancedLocators.json");
-        System.setProperty("webdriver.chrome.driver", "src/main/java/com/selenium/chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "src/main/java/com/selenium/chromedriver.exe"); NO LONGER NEEDED
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.manage().window().maximize();

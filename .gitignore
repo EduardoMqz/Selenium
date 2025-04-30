@@ -5,3 +5,5 @@ src/test/java/com/resources/II_locators.json
 target/test-classes/com/resources/II_locators.json
 src/test/java/com/resources/III_advancedLocators.json
 target/test-classes/com/resources/III_advancedLocators.json
+src/test/java/com/resources/IV_WebElements.json
+target/test-classes/com/resources/IV_WebElements.json
