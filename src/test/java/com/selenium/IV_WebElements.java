@@ -22,6 +22,7 @@ public class IV_WebElements {
         Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/IV_WebElements.json");
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().window().maximize();
         
         driver.get((String) config.get("webPage"));
         WebElement ddlCurrency = driver.findElement(By.id("ctl00_mainContent_DropDownListCurrency"));
@@ -41,9 +42,17 @@ public class IV_WebElements {
         driver.findElement(By.id("btnclosepaxoption")).click();
         String passangers = driver.findElement(By.id("divpaxinfo")).getText();
         Assert.assertEquals("4 Adult", passangers);
+
+        //Dynamic Dropdown a[@value='BLR'] -> a[@value='MAA']
+        driver.findElement(By.id("ctl00_mainContent_ddl_originStation1_CTXT")).click();
+       wait.until(
+           ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@value='BLR']")));
+        driver.findElement(By.xpath("//a[@value='BLR']")).click();
+        driver.findElement(By.id("ctl00_mainContent_ddl_destinationStation1_CTXT")).click();
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@value='MAA']")));
+        driver.findElement(By.xpath("//a[@value='MAA']")).click();
         driver.quit();
-
-
     }
 
 }
