@@ -2,8 +2,8 @@ package com.selenium;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -23,16 +23,16 @@ public class IV_WebElements {
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.manage().window().maximize();
-        
+
         driver.get((String) config.get("webPage"));
         WebElement ddlCurrency = driver.findElement(By.id("ctl00_mainContent_DropDownListCurrency"));
         Select selectCurrency = new Select(ddlCurrency);
         selectCurrency.selectByIndex(3);
-        System.out.println(selectCurrency.getFirstSelectedOption().getText()); 
+        System.out.println(selectCurrency.getFirstSelectedOption().getText());
         selectCurrency.selectByContainsVisibleText("AED");
         System.out.println(selectCurrency.getFirstSelectedOption().getText());
-        
-        //passengers
+
+        // passengers
         driver.findElement(By.id("divpaxinfo")).click();
         wait.until(
             ExpectedConditions.visibilityOfElementLocated(By.id("hrefIncAdt")));
@@ -43,16 +43,55 @@ public class IV_WebElements {
         String passangers = driver.findElement(By.id("divpaxinfo")).getText();
         Assert.assertEquals("4 Adult", passangers);
 
-        //Dynamic Dropdown a[@value='BLR'] -> a[@value='MAA']
+        // Dynamic Dropdown a[@value='BLR'] -> a[@value='MAA']
         driver.findElement(By.id("ctl00_mainContent_ddl_originStation1_CTXT")).click();
-       wait.until(
-           ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@value='BLR']")));
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@value='BLR']")));
         driver.findElement(By.xpath("//a[@value='BLR']")).click();
         driver.findElement(By.id("ctl00_mainContent_ddl_destinationStation1_CTXT")).click();
         wait.until(
             ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@value='MAA']")));
         driver.findElement(By.xpath("//a[@value='MAA']")).click();
         driver.quit();
+    }
+
+    @Test
+    public void webElementAutoComplete() throws IOException {
+        Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/IV_WebElements.json");
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+
+        driver.get((String) config.get("webPage"));
+        driver.findElement(By.id("autosuggest")).sendKeys("Ja");
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.cssSelector("li[class='ui-menu-item'] a")));
+        List<WebElement> optionsCountry = driver.findElements(By.cssSelector("li[class='ui-menu-item'] a"));
+        for (WebElement webElement : optionsCountry) {
+            if (webElement.getText().equalsIgnoreCase("Japan")) {
+                webElement.click();
+                break;
+            }
+        }
+        driver.quit();
+    }
+
+    @Test
+    public void webElementCheckBox() throws IOException{
+        Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/IV_WebElements.json");
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+
+        driver.get((String) config.get("webPage"));
+        WebElement chkfamfri = driver.findElement(By.cssSelector("input[id='ctl00_mainContent_chk_friendsandfamily']"));
+        System.out.println(chkfamfri.isSelected());
+        chkfamfri.click();
+        System.out.println(chkfamfri.isSelected());
+        int chkNumb = driver.findElements(By.cssSelector("input[type='checkbox']")).size();
+        System.out.println(chkNumb);
+        driver.quit();
+
     }
 
 }
