@@ -85,13 +85,32 @@ public class IV_WebElements {
 
         driver.get((String) config.get("webPage"));
         WebElement chkfamfri = driver.findElement(By.cssSelector("input[id='ctl00_mainContent_chk_friendsandfamily']"));
-        System.out.println(chkfamfri.isSelected());
+        Assert.assertFalse(chkfamfri.isSelected());
         chkfamfri.click();
-        System.out.println(chkfamfri.isSelected());
+        Assert.assertTrue(chkfamfri.isSelected());
         int chkNumb = driver.findElements(By.cssSelector("input[type='checkbox']")).size();
         System.out.println(chkNumb);
         driver.quit();
-
     }
 
+    @Test
+    public void webElementCalendar() throws IOException{
+        Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/IV_WebElements.json");
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+
+        driver.get((String) config.get("webPage"));
+        driver.findElement(By.id("ctl00_mainContent_view_date1")).click();
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@data-month='4']/a[text()='12']")));
+        driver.findElement(By.xpath("//td[@data-month='4']/a[text()='12']")).click();
+        driver.findElement(By.id("ctl00_mainContent_view_date2")).click();
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@data-month='5']/a[text()='12']")));
+            driver.findElement(By.xpath("//td[@data-month='5']/a[text()='12']")).click();
+        driver.quit();
+
+
+    }
 }
