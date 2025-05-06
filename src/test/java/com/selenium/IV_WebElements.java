@@ -80,7 +80,6 @@ public class IV_WebElements {
     public void webElementCheckBox() throws IOException{
         Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/IV_WebElements.json");
         WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.manage().window().maximize();
 
         driver.get((String) config.get("webPage"));
@@ -110,7 +109,5 @@ public class IV_WebElements {
             ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[@data-month='5']/a[text()='12']")));
             driver.findElement(By.xpath("//td[@data-month='5']/a[text()='12']")).click();
         driver.quit();
-
-
     }
 }
