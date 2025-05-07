@@ -110,4 +110,25 @@ public class IV_WebElements {
             driver.findElement(By.xpath("//td[@data-month='5']/a[text()='12']")).click();
         driver.quit();
     }
+
+    @Test
+    public void webElementAlerts() throws IOException{
+        Map<String, Object> config = JsonReader.readJsonAsMap("src/test/java/com/resources/IV_WebElements.json");
+        WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().window().maximize();
+
+        driver.get((String) config.get("webPage2"));
+        driver.findElement(By.id("name")).sendKeys((String) config.get("name"));
+        driver.findElement(By.id("alertbtn")).click();
+        String alertTxt = driver.switchTo().alert().getText();
+        Assert.assertTrue(alertTxt.contains((String) config.get("name")));
+        driver.switchTo().alert().accept();
+        driver.findElement(By.cssSelector("[id='name']")).sendKeys((String) config.get("name"));
+        driver.findElement(By.cssSelector("[id='confirmbtn']")).click();
+        alertTxt = driver.switchTo().alert().getText();
+        Assert.assertTrue(alertTxt.contains((String) config.get("name")));
+        driver.switchTo().alert().dismiss();
+        driver.quit();
+    }
 }
