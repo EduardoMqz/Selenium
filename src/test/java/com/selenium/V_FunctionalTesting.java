@@ -2,6 +2,7 @@ package com.selenium;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,27 +25,19 @@ public class V_FunctionalTesting {
         driver.manage().window().maximize();
 
         driver.get((String) config.get("webPage"));
-
         List<WebElement> products = driver.findElements(By.className("product"));
-        System.out.println(products.size());
-        for (WebElement webElement : products) {
-            System.out.println(webElement.findElement(By.className("product-name")).getText());
-            if (webElement.findElement(By.className("product-name")).getText().contains("Cucumber")) {
-                System.out.println("encontre cucumbers");
-                webElement.findElement(By.className("stepper-input")).findElement(By.className("increment")). click();
-                webElement.findElement(By.className("stepper-input")).findElement(By.className("increment")). click();
-                webElement.findElement(By.className("stepper-input")).findElement(By.className("increment")). click();
-                webElement.findElement(By.className("stepper-input")).findElement(By.className("increment")). click();
-                break;
-                
+        String[] productList = {"Cucumber", "Brinjal", "Mushroom", "Corn"};
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).findElement(By.className("product-name")).getText().contains("Cucumber")) {
+                while (!products.get(i).findElement(By.className("stepper-input")).findElement(By.className("quantity")).getDomAttribute("value").equalsIgnoreCase("5")) {
+                    products.get(i).findElement(By.className("stepper-input")).findElement(By.className("increment")). click();
+                }
+                products.get(i).findElement(By.className("product-action")).click();
+                break;  
             }
             
         }
-
-
-        //driver.findElement(By.xpath("//a[@class='increment'][2]")).click();
-
-        
+       driver.quit();   
     }
 
 }
