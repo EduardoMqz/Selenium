@@ -9,3 +9,5 @@ src/test/java/com/resources/IV_WebElements.json
 target/test-classes/com/resources/IV_WebElements.json
 src/test/java/com/resources/V_FunctionalTesting.json
 target/test-classes/com/resources/V_FunctionalTesting.json
+src/test/java/com/resources/VI_Synchronization.json
+target/test-classes/com/resources/VI_Synchronization.json
