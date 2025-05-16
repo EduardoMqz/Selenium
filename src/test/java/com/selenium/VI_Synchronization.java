@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.resources.JsonReader;
@@ -16,7 +17,8 @@ import com.resources.JsonReader;
 public class VI_Synchronization {
     // 1. Implicit Wait - driver.manage().timeouts().implicitlyWait(10,
     // TimeUnit.SECONDS);
-    // 2. Explicit Wait - WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    // 2. Explicit Wait - WebDriverWait wait = new WebDriverWait(driver,
+    // Duration.ofSeconds(10));
     // wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementId")));
     // 3. Fluent Wait - Wait<WebDriver> wait = new
     // FluentWait<>(driver).withTimeout(Duration.ofSeconds(30)).pollingEvery(Duration.ofSeconds(5))
@@ -31,9 +33,10 @@ public class VI_Synchronization {
 
     @Test
     public void testSynchronization() throws IOException {
-       Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
-       List<String> productsList = (List<String>) config.get("productsToAdd");
+        Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+        List<String> productsList = (List<String>) config.get("productsToAdd");
         WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         try {
             driver.manage().window().maximize();
@@ -52,7 +55,12 @@ public class VI_Synchronization {
             }
             driver.findElement(By.className("cart-icon")).click();
             driver.findElement(By.xpath("//button[normalize-space()='PROCEED TO CHECKOUT']")).click();
+            wait.until(
+                    ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@class='promoCode']")));
             driver.findElement(By.cssSelector("input.promoCode")).sendKeys((String) config.get("promoCode"));
+            driver.findElement(By.className("promoBtn")).click();
+            wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.promoInfo")));
         } finally {
             driver.quit();
         }
