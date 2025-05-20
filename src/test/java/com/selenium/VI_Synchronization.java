@@ -28,7 +28,8 @@ public class VI_Synchronization {
     // flaky tests and is not a good practice in automation.
     // 5. Script Timeout
 
-    private static final String JSON_PATH = "src/test/java/com/resources/VI_Synchronization.json";
+    private static final String JSON_PATH = "src\\test\\java\\com\\resources\\VI_Synchronization.json";
+
     private static final int TARGET_QUANTITY = 5;
 
     @Test
