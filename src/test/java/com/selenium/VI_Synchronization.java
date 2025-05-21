@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.resources.JsonReader;
@@ -17,7 +21,7 @@ import com.resources.JsonReader;
 public class VI_Synchronization {
     // 1. Implicit Wait - driver.manage().timeouts().implicitlyWait(10,
     // TimeUnit.SECONDS);
-    // 2. Explicit Wait - WebDriverWait wait = new WebDriverWait(driver,
+    // 2. Explicit (fluent) Wait - WebDriverWait wait = new WebDriverWait(driver,
     // Duration.ofSeconds(10));
     // wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("elementId")));
     // 3. Fluent Wait - Wait<WebDriver> wait = new
@@ -61,10 +65,29 @@ public class VI_Synchronization {
             driver.findElement(By.cssSelector("input.promoCode")).sendKeys((String) config.get("promoCode"));
             driver.findElement(By.className("promoBtn")).click();
             wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.promoInfo")));
+                    ExpectedConditions.visibilityOfElementLocated(By.cssSelector("span.promoInfo")));
         } finally {
             driver.quit();
         }
+    }
+
+    @Test
+    public void fluentWait() throws IOException {
+        Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+        WebDriver driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+        driver.get((String) config.get("webPage2"));
+        driver.findElement(By.cssSelector("[id='start'] button")).click();
+
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(15)).pollingEvery(Duration.ofSeconds(3))
+                                                                .ignoring(NoSuchElementException.class);
+        wait.until(d -> {
+            WebElement result = d.findElement(By.cssSelector("[id='finish'] h4"));
+            return result.getText().equalsIgnoreCase("Hello World!");
+        });
+        driver.quit();
+
     }
 
     private void setProductQuantity(WebElement product, int targetQuantity) {
