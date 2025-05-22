@@ -76,17 +76,22 @@ public class VI_Synchronization {
         Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
         WebDriver driver = new ChromeDriver();
 
-        driver.manage().window().maximize();
-        driver.get((String) config.get("webPage2"));
-        driver.findElement(By.cssSelector("[id='start'] button")).click();
+        try {
+            driver.manage().window().maximize();
+            driver.get((String) config.get("webPage2"));
+            driver.findElement(By.cssSelector("[id='start'] button")).click();
 
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(15)).pollingEvery(Duration.ofSeconds(3))
-                                                                .ignoring(NoSuchElementException.class);
-        wait.until(d -> {
-            WebElement result = d.findElement(By.cssSelector("[id='finish'] h4"));
-            return result.getText().equalsIgnoreCase("Hello World!");
-        });
-        driver.quit();
+            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(15))
+                    .pollingEvery(Duration.ofSeconds(3))
+                    .ignoring(NoSuchElementException.class);
+            wait.until(d -> {
+                WebElement result = d.findElement(By.cssSelector("[id='finish'] h4"));
+                return result.getText().equalsIgnoreCase("Hello World!");
+            });
+
+        } finally {
+            driver.quit();
+        }
 
     }
 
