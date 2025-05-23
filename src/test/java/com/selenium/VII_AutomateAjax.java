@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,9 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.resources.JsonReader;
@@ -67,10 +64,26 @@ public class VII_AutomateAjax {
             System.out.println(user);
             driver.switchTo().window(parentID);
             driver.findElement(By.id("username")).sendKeys(user);
+        } finally {
+            // driver.quit();
+        }
+
+    }
+
+    @Test
+    public void handlingFrames() throws IOException {
+        Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+        WebDriver driver = new ChromeDriver();
+        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            driver.manage().window().maximize();
+            driver.get((String) config.get("webPageDrag"));
+            driver.switchTo().frame(driver.findElement(By.className("demo-frame")));
+            driver.findElement(By.id("draggable")).click();
 
         } finally {
             driver.quit();
         }
-
     }
 }
