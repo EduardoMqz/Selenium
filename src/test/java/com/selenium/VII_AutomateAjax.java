@@ -14,7 +14,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.resources.JsonReader;
 
 public class VII_AutomateAjax {
@@ -65,7 +64,7 @@ public class VII_AutomateAjax {
             driver.switchTo().window(parentID);
             driver.findElement(By.id("username")).sendKeys(user);
         } finally {
-            // driver.quit();
+            driver.quit();
         }
 
     }
@@ -74,16 +73,19 @@ public class VII_AutomateAjax {
     public void handlingFrames() throws IOException {
         Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
         WebDriver driver = new ChromeDriver();
-        // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         try {
             driver.manage().window().maximize();
             driver.get((String) config.get("webPageDrag"));
             driver.switchTo().frame(driver.findElement(By.className("demo-frame")));
-            driver.findElement(By.id("draggable")).click();
-
+            WebElement draggableObjElement = driver.findElement(By.id("draggable"));
+            WebElement dropZone = driver.findElement(By.id("droppable"));
+            draggableObjElement.click();
+            Actions actions = new Actions(driver);
+            actions.dragAndDrop(draggableObjElement, dropZone).build().perform();
         } finally {
             driver.quit();
         }
+
     }
 }

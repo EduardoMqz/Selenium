@@ -13,3 +13,5 @@ src/test/java/com/resources/VI_Synchronization.json
 target/test-classes/com/resources/VI_Synchronization.json
 src/test/java/com/resources/VII_AutomateAjax.json
 target/test-classes/com/resources/VII_AutomateAjax.json
+src/test/java/com/resources/VIII_RealTimeExercises.json
+target/test-classes/com/resources/VIII_RealTimeExercises.json
