@@ -15,3 +15,5 @@ src/test/java/com/resources/VII_AutomateAjax.json
 target/test-classes/com/resources/VII_AutomateAjax.json
 src/test/java/com/resources/VIII_RealTimeExercises.json
 target/test-classes/com/resources/VIII_RealTimeExercises.json
+src/test/java/com/resources/IX_PracticalProblems.json
+target/test-classes/com/resources/IX_PracticalProblems.json

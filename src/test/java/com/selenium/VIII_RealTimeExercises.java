@@ -35,11 +35,11 @@ public class VIII_RealTimeExercises {
         WebElement footerDriver = driver.findElement(By.id("gf-BIG")); // limiting webdriver scope
         List<WebElement> listOfFooterLInks = footerDriver.findElements(By.tagName("a"));
         System.out.println(listOfFooterLInks.size());
-        // count of only first column
+        // count only first column
         WebElement columnOneDriver = footerDriver.findElement(By.xpath("//table/tbody/tr/td[1]/ul"));
         List<WebElement> listOfLinksColumnOne = columnOneDriver.findElements(By.tagName("a"));
         System.out.println(listOfLinksColumnOne.size());
-        // click on each link and check page if the page are opening
+        // click on each link and check if the page are opening
         listOfLinksColumnOne.stream()
                 .skip(1) // Skip the first element (equivalent to starting at i=1)
                 .forEach(link -> {
@@ -61,19 +61,30 @@ public class VIII_RealTimeExercises {
     }
 
     @Test
-    public void handlingCalendar() throws IOException{
+    public void handlingCalendar() throws IOException {
         Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
         WebDriver driver = new ChromeDriver();
 
         driver.get((String) config.get("webPage2"));
         driver.manage().window().maximize();
+        String expectedDate = config.get("date").toString();
         driver.findElement(By.className("react-date-picker__inputGroup")).click();
         driver.findElement(By.className("react-calendar__navigation__label")).click();
         driver.findElement(By.className("react-calendar__navigation__label")).click();
-        driver.findElement(By.xpath("//button[text()='"+config.get("date").toString().split("/")[2]+"']")).click();
-        driver.findElements(By.cssSelector(".react-calendar__year-view__months__month")).get(Integer.parseInt(config.get("date").toString().split("/")[0])-1).click();
-        driver.findElement(By.xpath("//abbr[text()='"+config.get("date").toString().split("/")[1]+"']")).click();
-
+        driver.findElement(By.xpath("//button[text()='" + expectedDate.split("/")[2] + "']")).click();
+        driver.findElements(By.cssSelector(".react-calendar__year-view__months__month"))
+                .get(Integer.parseInt(expectedDate.split("/")[0]) - 1).click();
+        driver.findElement(By.xpath("//abbr[text()='" + expectedDate.split("/")[1] + "']")).click();
+        List<WebElement> actualList = driver.findElements(By.className("react-date-picker__inputGroup__input"));
+        StringBuilder selectedDate = new StringBuilder();
+        for (int i = 0; i < actualList.size(); i++) {
+            String num = actualList.get(i).getDomAttribute("value");
+            selectedDate.append(String.format("%02d", Integer.parseInt(num)));
+            if (i < 2) {
+                selectedDate.append("/");
+            }
+        }
+        Assert.assertEquals(selectedDate.toString(), expectedDate);
         driver.quit();
 
     }
