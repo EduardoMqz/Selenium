@@ -19,3 +19,5 @@ src/test/java/com/resources/IX_PracticalProblems.json
 target/test-classes/com/resources/IX_PracticalProblems.json
 src/test/java/com/resources/X_MiscellaneousTopics.json
 target/test-classes/com/resources/X_MiscellaneousTopics.json
+src/test/java/screenshot/Screenshot.png
+target/test-classes/screenshot/Screenshot.png
