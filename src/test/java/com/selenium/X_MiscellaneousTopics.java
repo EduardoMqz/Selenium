@@ -2,10 +2,16 @@ package com.selenium;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.TakesScreenshot;
 import java.util.Map;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 
 public class X_MiscellaneousTopics {
     private static final String JSON_PATH = "src\\test\\java\\com\\resources\\X_MiscellaneousTopics.json";
+
 
     @Test
     public void test() throws IOException {
@@ -64,6 +71,22 @@ public class X_MiscellaneousTopics {
         } else {
             System.out.println("Failed to delete the file.");
         }
+    }
+
+    @Test
+    public void brokenLinks() throws IOException, URISyntaxException{
+        Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(config.get("webPage2").toString());
+        driver.manage().window().maximize();
+        String url = driver.findElement(By.cssSelector("a[href*='brokenlink']")).getDomAttribute("href");
+        HttpURLConnection conn = (HttpURLConnection) new URI(url).toURL().openConnection();
+        conn.setRequestMethod("HEAD");
+        conn.connect();
+        int responseCode = conn.getResponseCode();
+        Assert.assertEquals(404, responseCode);
+        driver.quit();
     }
 
 }
