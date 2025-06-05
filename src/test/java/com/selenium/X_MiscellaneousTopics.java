@@ -6,22 +6,27 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.TakesScreenshot;
+
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.asserts.SoftAssert;
+
 import com.resources.JsonReader;
 import org.apache.commons.io.FileUtils;
 
 public class X_MiscellaneousTopics {
     private static final String JSON_PATH = "src\\test\\java\\com\\resources\\X_MiscellaneousTopics.json";
-
 
     @Test
     public void test() throws IOException {
@@ -74,7 +79,7 @@ public class X_MiscellaneousTopics {
     }
 
     @Test
-    public void brokenLinks() throws IOException, URISyntaxException{
+    public void brokenLinks() throws IOException, URISyntaxException {
         Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
         WebDriver driver = new ChromeDriver();
 
@@ -87,6 +92,38 @@ public class X_MiscellaneousTopics {
         int responseCode = conn.getResponseCode();
         Assert.assertEquals(404, responseCode);
         driver.quit();
+    }
+
+    @Test
+    public void iterateOverLinks() throws IOException, URISyntaxException {
+        Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+        WebDriver driver = new ChromeDriver();
+        SoftAssert softAssert = new SoftAssert();
+
+        driver.get(config.get("webPage2").toString());
+        driver.manage().window().maximize();
+        List<WebElement> links = driver.findElements(By.cssSelector("li[class='gf-li'] a"));
+        links.stream()
+                .skip(1)
+                .forEach(link -> {
+                    String url = link.getDomAttribute("href");
+                    if (url == null || url.trim().isEmpty() || url.equals("#")) {
+                        return;
+                    }
+                    HttpURLConnection conn;
+                    try {
+                        conn = (HttpURLConnection) new URI(url).toURL().openConnection();
+                        conn.setRequestMethod("HEAD");
+                        conn.connect();
+                        int responseCode = conn.getResponseCode();
+                        softAssert.assertTrue(responseCode < 400, "The link with text " + link.getText() + " is broken with code " + responseCode);
+                    } catch (IOException | URISyntaxException e) {
+                        softAssert.fail("The link with text " + link.getText() + " threw exception: " + e.getMessage());
+                    }
+                });
+        driver.quit();
+        softAssert.assertAll();
+
     }
 
 }
