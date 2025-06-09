@@ -3,9 +3,13 @@ package com.selenium;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.common.collect.Streams;
 
 public class XI_JavaStream {
 
@@ -50,7 +54,23 @@ public class XI_JavaStream {
 
         List<String> nom = Arrays.asList("oliva", "sophia", "owen", "ethan", "oliver");
         nom.stream().filter(name -> name.startsWith("o"))
-            .map(name -> name.toUpperCase()).sorted().forEach(name -> System.out.println(name + " starts with an O"));
+            .map(name -> name.toUpperCase()).sorted()
+            .forEach(name -> System.out.println(name + " starts with an O"));
+
+        Stream<String> newStream = Streams.concat(names.stream(), nom.stream());
+        boolean flag = newStream.anyMatch(name -> name.equalsIgnoreCase("Adam"));
+        System.out.println(flag);
+        Assert.assertTrue(flag);
+
+        List<String> namesCollect = Stream.of("sophia", "liam", "olivia", "noah", "ava", "ethan").filter(name -> name.endsWith("a"))
+            .map(name -> name.toUpperCase()).collect(Collectors.toList());
+        System.out.println("Collectors name: " + namesCollect.get(0));
+
+        List<Integer> numbers = Arrays.asList(4,5,6,8,7,1,3,6,9,4,7);
+        //print unique numbers, sort array
+        numbers.stream().distinct().sorted().forEach(number -> System.out.println(number));
+        List<Integer> numb = numbers.stream().distinct().sorted().collect(Collectors.toList());
+        System.out.println("number in index 2: " + numb.get(2));
         /****************************************************/
     }
 }
