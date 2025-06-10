@@ -21,3 +21,5 @@ src/test/java/com/resources/X_MiscellaneousTopics.json
 target/test-classes/com/resources/X_MiscellaneousTopics.json
 src/test/java/screenshot/Screenshot.png
 target/test-classes/screenshot/Screenshot.png
+src/test/java/com/resources/XI_JavaStream.json
+target/test-classes/com/resources/XI_JavaStream.json
