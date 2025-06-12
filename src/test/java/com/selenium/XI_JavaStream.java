@@ -95,15 +95,27 @@ public class XI_JavaStream {
             .collect(Collectors.toList());
         List<String> sortedList = productsList.stream().sorted().collect(Collectors.toList());
         Assert.assertEquals(productsList, sortedList);
-
+        
         String productPrice = findProductPrice(driver, "Mango");
         System.out.println(productPrice);
 
         driver.quit();
     }
 
-    public static String getPriceVeg(WebElement element) {
-        return element.findElement(By.xpath("following-sibling::td[1]")).getText();
+    @Test
+    public void searchProduct() throws IOException{
+        Map<String,Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+        WebDriver driver = new ChromeDriver();
+
+        driver.get(config.get("webPage").toString());
+        driver.manage().window().maximize();
+        String productToSearch = "carrot";
+        driver.findElement(By.id("search-field")).sendKeys(productToSearch);
+        List<WebElement> elementsList = driver.findElements(By.xpath("//tbody/tr/td[1]"));
+        elementsList.stream().forEach(productName -> {
+            Assert.assertTrue(productName.getText().toLowerCase().contains(productToSearch));
+        });
+        driver.quit();
     }
 
     public String findProductPrice(WebDriver driver, String product) {
@@ -120,5 +132,9 @@ public class XI_JavaStream {
         } else {
             return price;
         }
+    }
+
+    public static String getPriceVeg(WebElement element) {
+        return element.findElement(By.xpath("following-sibling::td[1]")).getText();
     }
 }
