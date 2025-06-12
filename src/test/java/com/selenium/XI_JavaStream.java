@@ -39,7 +39,6 @@ public class XI_JavaStream {
             String name = names.get(i);
             if (name.startsWith("A")) {
                 count++;
-
             }
         }
         System.out.println("using regular java: " + count);
@@ -64,20 +63,19 @@ public class XI_JavaStream {
 
         List<String> nom = Arrays.asList("oliva", "sophia", "owen", "ethan", "oliver");
         nom.stream().filter(name -> name.startsWith("o"))
-            .map(name -> name.toUpperCase()).sorted()
-            .forEach(name -> System.out.println(name + " starts with an O"));
+            .map(name -> name.toUpperCase()).sorted().forEach(name -> System.out.println(name + " starts with an O"));
 
         Stream<String> newStream = Streams.concat(names.stream(), nom.stream());
         boolean flag = newStream.anyMatch(name -> name.equalsIgnoreCase("Adam"));
         System.out.println(flag);
         Assert.assertTrue(flag);
 
-        List<String> namesCollect = Stream.of("sophia", "liam", "olivia", "noah", "ava", "ethan").filter(name -> name.endsWith("a"))
-            .map(name -> name.toUpperCase()).collect(Collectors.toList());
+        List<String> namesCollect = Stream.of("sophia", "liam", "olivia", "noah", "ava", "ethan")
+            .filter(name -> name.endsWith("a")).map(name -> name.toUpperCase()).collect(Collectors.toList());
         System.out.println("Collectors name: " + namesCollect.get(0));
 
-        List<Integer> numbers = Arrays.asList(4,5,6,8,7,1,3,6,9,4,7);
-        //print unique numbers, sort array
+        List<Integer> numbers = Arrays.asList(4, 5, 6, 8, 7, 1, 3, 6, 9, 4, 7);
+        // print unique numbers, sort array
         numbers.stream().distinct().sorted().forEach(number -> System.out.println(number));
         List<Integer> numb = numbers.stream().distinct().sorted().collect(Collectors.toList());
         System.out.println("number in index 2: " + numb.get(2));
@@ -85,17 +83,42 @@ public class XI_JavaStream {
     }
 
     @Test
-    public void webTableSorting() throws IOException{
-        Map<String,Object> config = JsonReader.readJsonAsMap(JSON_PATH);
+    public void webTableSorting() throws IOException {
+        Map<String, Object> config = JsonReader.readJsonAsMap(JSON_PATH);
         WebDriver driver = new ChromeDriver();
 
         driver.get(config.get("webPage").toString());
         driver.manage().window().maximize();
         driver.findElement(By.xpath("//th[1]")).click();
         List<WebElement> elementsList = driver.findElements(By.xpath("//tbody/tr/td[1]"));
-        List<String> productsList = elementsList.stream().map(product -> product.getText()).collect(Collectors.toList());
+        List<String> productsList = elementsList.stream().map(product -> product.getText())
+            .collect(Collectors.toList());
         List<String> sortedList = productsList.stream().sorted().collect(Collectors.toList());
         Assert.assertEquals(productsList, sortedList);
+
+        String productPrice = findProductPrice(driver, "Mango");
+        System.out.println(productPrice);
+
         driver.quit();
+    }
+
+    public static String getPriceVeg(WebElement element) {
+        return element.findElement(By.xpath("following-sibling::td[1]")).getText();
+    }
+
+    public String findProductPrice(WebDriver driver, String product) {
+        List<WebElement> rows = driver.findElements(By.xpath("//tbody/tr/td[1]"));
+        String price = rows.stream().filter(element -> element.getText().contains(product))
+            .map(element -> getPriceVeg(element)).findFirst().orElse("No product found");
+        if (price.contains("No product")) {
+            try {
+                driver.findElement(By.cssSelector("[aria-label='Next']")).click();
+                return findProductPrice(driver, product);
+            } catch (Exception e) {
+                return product + " not found in any page";
+            }
+        } else {
+            return price;
+        }
     }
 }
