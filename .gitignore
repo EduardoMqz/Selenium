@@ -25,3 +25,7 @@ src/test/java/com/resources/XI_JavaStream.json
 target/test-classes/com/resources/XI_JavaStream.json
 src/test/java/com/resources/XII_features.json
 target/test-classes/com/resources/XII_features.json
+src/test/java/com/resources/XIII_Framework_TestNG.json
+target/test-classes/com/resources/XIII_Framework_TestNG.json
+src/test/java/screenshot/nameTxt.png
+target/test-classes/screenshot/nameTxt.png

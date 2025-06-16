@@ -1,10 +1,13 @@
 package com.selenium;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
@@ -40,7 +43,17 @@ public class XII_features {
         driver.get(config.get("webPageCourses").toString());
         String courseTtitle = driver.findElements(By.cssSelector("a[href*='/p/'] div[class='course-listing-title']")).get(1).getText();
         driver.switchTo().window(parentWindow);
-        driver.findElement(By.cssSelector("[name='name']")).sendKeys(courseTtitle);
+        WebElement nameTxt = driver.findElement(By.cssSelector("[name='name']"));
+        nameTxt.sendKeys(courseTtitle);
+
+        //take webelement screenshot
+        File nameFile = nameTxt.getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(nameFile, new File("src\\test\\java\\screenshot\\nameTxt.png"));
+
+        //get height and width
+        Assert.assertEquals(nameTxt.getRect().getDimension().getWidth(), (Number) config.get("width"));
+        Assert.assertEquals(nameTxt.getRect().getDimension().getHeight(), (Number) config.get("height"));
         driver.quit();
     }
+
 }
