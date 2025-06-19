@@ -19,8 +19,7 @@ public class II_Locators {
         System.setProperty("webdriver.chrome.driver", "src/main/java/com/selenium/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        // <---implicit wait
+        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5)); <---implicit wait
 
         driver.get((String) config.get("webpage"));
         driver.findElement(By.id("inputUsername")).sendKeys((String) config.get("username"));
