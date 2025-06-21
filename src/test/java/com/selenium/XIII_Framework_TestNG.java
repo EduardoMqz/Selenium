@@ -1,9 +1,10 @@
 package com.selenium;
 
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class XIII_Framework_TestNG {
-    private static final String JSON_PATH = "src\\test\\java\\com\\resources\\XIII_Framework_TestNG.json";
 
     @Test
     public void testNG(){
@@ -15,5 +16,26 @@ public class XIII_Framework_TestNG {
     public void secondTest(){
         System.out.println("second Test");
     }
+
+    @Test
+    public void thirdTest(){
+        System.out.println("Third test");
+    }
+
+    @Test
+    public void thirdTestPartII(){
+        System.out.println("A sequel!!! unbelievable");
+    }
+
+    @BeforeTest
+    public void beforeTest(){
+        System.out.println("I will execute first");
+    }
+
+    @AfterTest
+    public void afterTest(){
+        System.out.println("I will execute last");
+    }
+
 
 }

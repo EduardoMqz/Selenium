@@ -5,7 +5,8 @@
             <class name="com.selenium.XIII_Framework_TestNG">
                 <methods>
                     <exclude name="secondTest" />
-                    <include name="testNG"></include>
+                    <exclude name="third." />
+                    <include name="testNG"/>
                 </methods>
             </class>
             <class name="com.selenium.I_JavaConcepts" />
